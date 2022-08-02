@@ -1,0 +1,154 @@
+Structure:
+
+    1. server.js : Memuat kode untuk membuat, mengonfigurasi, dan menjalankan server HTTP menggunakan Hapi.
+    2. routes.js : Memuat kode konfigurasi routing server seperti menentukan path, method, dan handler yang digunakan.
+    3. handler.js : Memuat seluruh fungsi-fungsi handler yang digunakan pada berkas routes.
+    4. notes.js : Memuat data notes yang disimpan dalam bentuk array objek.
+
+{
+    id: string,
+    title: string,
+    createdAt: string,
+    updatedAt: string,
+    tags: array of string,
+    body: string,
+}
+
+/notes POST
+
+{
+    "title": "Judul Catatan",
+    "tags": ["Tag 1", "Tag 2"],
+    "body": "Konten catatan"
+}
+
+properti id, createdAt, dan updatedAt harus diolah di sisi server
+
+if success then 
+    statusCode = 201
+    {
+      "status": "success",
+      "message": "Catatan berhasil ditambahkan",
+      "data": {
+        "noteId": "V09YExygSUYogwWJ"
+      }
+    }
+
+else :
+    statusCode = 500
+    {   
+      "status": "error",
+      "message": "Catatan gagal untuk ditambahkan"
+    }
+
+/notes GET
+
+statusCode = 200
+
+if notes.length > 0 then
+    {
+        "status": "success",
+        "data": {
+            "notes": [
+                {
+                "id":"notes-V1StGXR8_Z5jdHi6B-myT",
+                "title":"Catatan 1",
+                "createdAt":"2020-12-23T23:00:09.686Z",
+                "updatedAt":"2020-12-23T23:00:09.686Z",
+                "tags":[
+                    "Tag 1",
+                    "Tag 2"
+                ],
+                "body":"Isi dari catatan 1"
+                },
+                {
+                "id":"notes-V1StGXR8_98apmLk3mm1",
+                "title":"Catatan 2",
+                "createdAt":"2020-12-23T23:00:09.686Z",
+                "updatedAt":"2020-12-23T23:00:09.686Z",
+                "tags":[
+                    "Tag 1",
+                    "Tag 2"
+                ],
+                "body":"Isi dari catatan 2"
+                }
+            ]
+        }
+    }
+
+else :
+    {   
+      "status": "success",
+      "data": {
+        "notes": []
+      }
+    }
+
+/notes/{id} GET
+
+if id available then
+    statusCode = 200
+    {
+    "status": "success",
+    "data": {
+        "note": {
+        "id":"notes-V1StGXR8_Z5jdHi6B-myT",
+        "title":"Catatan 1",
+        "createdAt":"2020-12-23T23:00:09.686Z",
+        "updatedAt":"2020-12-23T23:00:09.686Z",
+        "tags":[
+            "Tag 1",
+            "Tag 2"
+        ],
+        "body":"Isi dari catatan 1"
+            }
+        }
+    }
+
+else:
+    statusCode = 404
+    {
+      "status": "fail",
+      "message": "Catatan tidak ditemukan"
+    }
+
+/notes/{id} PUT
+
+{
+    "title":"Judul Catatan Revisi",
+    "tags":[
+    "Tag 1",
+    "Tag 2"
+    ],
+    "body":"Konten catatan"
+}
+
+if success then 
+    statusCode = 200
+    {
+      "status": "success",
+      "message": "Catatan berhasil diperbaharui"
+    }
+
+if not available:
+    statusCode = 404
+    {
+      "status": "fail",
+      "message": "Gagal memperbarui catatan. Id catatan tidak ditemukan"
+    }
+
+/notes/{id} DELETE
+
+if success then 
+    statusCode = 200
+     {
+      "status": "success",
+      "message": "Catatan berhasil dihapus"
+    }
+
+if not available:
+    statusCode = 404
+    {
+      "status": "fail",
+      "message": "Catatan gagal dihapus. Id catatan tidak ditemukan"
+    }
